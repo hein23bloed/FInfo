@@ -1,3 +1,3 @@
 #My Python collection 
 
-finfo.py #little file crawler wich check a file for it rigths or compare 2 files/directorys with each other
+finfo.py #alphaversion of a little file crawler wich checks a file for rigths or compare 2 files/directorys with each other
