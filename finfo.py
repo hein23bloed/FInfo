@@ -51,7 +51,7 @@ def exist(filename):
 		fp = os.stat(filename)
 	except IOError as e:
 		print ("********************************************")
-		print ("* I/O-Fehler({0}): {1} *".format(e.errno, e.strerror))
+		print ("* I/O-Error({0}): {1} *".format(e.errno, e.strerror))
 		print ("********************************************")
 		sys.exit()
 	else:
