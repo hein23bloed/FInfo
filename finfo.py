@@ -3,9 +3,9 @@
 import os, sys, time, errno, getopt, pwd, grp
 from stat import * 
 
-_version = "v0.03"
+_version = "v0.01_04"
 
-def read_write(fn):
+def rw_access(fn):
 	if os.access(fn, os.R_OK):
 		print ("read: \t ok")
 	else:
@@ -32,7 +32,7 @@ def fsize(filesize):
 		result = (str(round(float(filesize) / (1024*1024*1024*1024), 2)) + "TB")
 		return result
 	
-def finfo(fn, fp):
+def print_finfo(fn, fp):
 	print ("\n")
 	print ("path: \t", os.path.dirname(os.path.abspath(fn)))
 	(p, f) = os.path.split(fn)
@@ -40,7 +40,7 @@ def finfo(fn, fp):
 	print ("size: \t", fsize(fp[ST_SIZE]))
 	print ("owner: \t", pwd.getpwuid(fp[ST_UID]).pw_name)
 	print ("group: \t", grp.getgrgid(fp[ST_GID]).gr_name)
-	read_write(fn)	
+	rw_access(fn)	
 	print ("access: ", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_ATIME])))
 	print ("changed:", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_MTIME])))
 	print ("meta: \t", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_CTIME])))
@@ -50,43 +50,54 @@ def exist(filename):
 	try:
 		fp = os.stat(filename)
 	except IOError as e:
-		print ("********************************************")
-		print ("* I/O-Error({0}): {1} *".format(e.errno, e.strerror))
-		print ("********************************************")
+		print ("I/O-Error({0}) {2}: {1} ".format(e.errno, e.strerror, filename))
 		sys.exit()
 	else:
 		return fp
 
+def fcomp(fn1, fn2):
+	exist(fn1)
+	exist(fn2)
+	print("compare")
+
 def usage():
-	print ("Usage: finfo [-vh] <file/directory> <file/directory>")
+	print ("Usage: finfo  <file/directory>")
+	print ("Usage: finfo -c --compare <file/directory> <file/directory>")
+	print ("Usage: finfo -vh --version --help")
+
 			
 
 def main(argv):
 	try:
-		opts, args = getopt.getopt(sys.argv[1:], "hv", ["help", "version"])
+		opts, args = getopt.getopt(sys.argv[1:], "hvc", ["help", "version", "compare"])
 	except getopt.GetoptError as err:
 		# print help information and exit:
 		print (str(err)) # will print something like "option -a not recognized"
 		usage()
 		sys.exit(2)
-	if len(sys.argv)<=1:
+	if len(sys.argv[1:])==0:
 		usage()
 		sys.exit()
-	elif len(sys.argv)==2:
-		usage()
-		sys.exit()
-	elif len(sys.argv)>4:
-		usage()
-		sys.exit(2)
-	for o, a in opts:
-		if o in ("-h", "--help"):
-			usage()
-			sys.exit()
-		elif o in ("-v", "--version"):
-			print (_version)
-			sys.exit()
 	else:
-		finfo(sys.argv[1], exist(sys.argv[1]))	
+		for o, a in opts:
+			if o in ("-h", "--help"):
+				usage()
+				sys.exit()
+			elif o in ("-v", "--version"):
+				print (_version)
+				sys.exit()
+			elif o in ("-c", "--compare"):
+				if len(sys.argv[3:])==0:
+					usage()
+					sys.exit()
+				else:
+					fcomp(sys.argv[2], sys.argv[3])
+					sys.exit()
+		else:
+			if len(sys.argv[1:])>=2:
+				usage()
+			else:
+				print_finfo(sys.argv[1], exist(sys.argv[1]))	
 		
 if __name__ == "__main__":
 	main(sys.argv[1:])
