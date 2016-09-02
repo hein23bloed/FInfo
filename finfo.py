@@ -69,9 +69,8 @@ def usage():
 def main(argv):
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "hvc", ["help", "version", "compare"])
-	except getopt.GetoptError as err:
-		# print help information and exit:
-		print (str(err)) # will print something like "option -a not recognized"
+	except getopt.GetoptError as err:		
+		print (str(err)) 
 		usage()
 		sys.exit(2)
 	if len(sys.argv)==0:
