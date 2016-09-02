@@ -43,7 +43,6 @@ def print_finfo(fn, fp):
 	rw_access(fn)	
 	print ("access: ", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_ATIME])))
 	print ("changed:", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_MTIME])))
-	print ("meta: \t", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_CTIME])))
 	print ("\n")
 
 def exist(filename):
