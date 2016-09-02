@@ -75,7 +75,7 @@ def main(argv):
 		print (str(err)) # will print something like "option -a not recognized"
 		usage()
 		sys.exit(2)
-	if len(sys.argv[1:])==0:
+	if len(sys.argv)==0:
 		usage()
 		sys.exit()
 	else:
@@ -94,7 +94,7 @@ def main(argv):
 					fcomp(sys.argv[2], sys.argv[3])
 					sys.exit()
 		else:
-			if len(sys.argv[1:])>=2:
+			if len(sys.argv)>2:
 				usage()
 			else:
 				print_finfo(sys.argv[1], exist(sys.argv[1]))	
