@@ -7,13 +7,13 @@ _version = "v0.01_04"
 
 def rw_access(fn):
 	if os.access(fn, os.R_OK):
-		print ("read: \t ok")
+		print("read: \t ok")
 	else:
-		print ("read: \t no")
+		print("read: \t no")
 	if os.access(fn, os.W_OK):
-		print ("write: \t ok")
+		print("write: \t ok")
 	else:
-		print ("write: \t no")
+		print("write: \t no")
 
 def fsize(filesize):
 	if filesize < 1000:
@@ -33,23 +33,23 @@ def fsize(filesize):
 		return result
 	
 def print_finfo(fn, fp):
-	print ("\n")
-	print ("path: \t", os.path.dirname(os.path.abspath(fn)))
+	print("\n")
+	print("path: \t", os.path.dirname(os.path.abspath(fn)))
 	(p, f) = os.path.split(fn)
-	print ("name: \t", f)	
-	print ("size: \t", fsize(fp[ST_SIZE]))
-	print ("owner: \t", pwd.getpwuid(fp[ST_UID]).pw_name)
-	print ("group: \t", grp.getgrgid(fp[ST_GID]).gr_name)
+	print("name: \t", f)	
+	print("size: \t", fsize(fp[ST_SIZE]))
+	print("owner: \t", pwd.getpwuid(fp[ST_UID]).pw_name)
+	print("group: \t", grp.getgrgid(fp[ST_GID]).gr_name)
 	rw_access(fn)	
-	print ("access: ", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_ATIME])))
-	print ("changed:", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_MTIME])))
-	print ("\n")
+	print("access: ", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_ATIME])))
+	print("changed:", time.strftime("%d.%m.%Y %H:%M:%S", time.localtime(fp[ST_MTIME])))
+	print("\n")
 
 def exist(filename):
 	try:
 		fp = os.stat(filename)
 	except IOError as e:
-		print ("I/O-Error({0}) {2}: {1} ".format(e.errno, e.strerror, filename))
+		print("I/O-Error({0}) {2}: {1} ".format(e.errno, e.strerror, filename))
 		sys.exit()
 	else:
 		return fp
@@ -60,9 +60,9 @@ def fcomp(fn1, fn2):
 	print("compare")
 
 def usage():
-	print ("Usage: finfo  <file/directory>")
-	print ("Usage: finfo -c --compare <file/directory> <file/directory>")
-	print ("Usage: finfo -vh --version --help")
+	print("Usage: finfo  <file/directory>")
+	print("Usage: finfo -c --compare <file/directory> <file/directory>")
+	print("Usage: finfo -vh --version --help")
 
 			
 
