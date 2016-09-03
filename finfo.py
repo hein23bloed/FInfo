@@ -5,6 +5,21 @@ from stat import *
 
 _version = "v0.01_04"
 
+def parser(argv):
+	try:
+		opts, args = getopt.getopt(argv, "hvc", ["help", "version", "compare"])
+	except getopt.GetoptError as err:		
+		print (str(err)) 
+		usage()
+		sys.exit(2)
+	else:
+		return opts
+
+def usage():
+	print("Usage: finfo  <file/directory>")
+	print("Usage: finfo -c --compare <file/directory> <file/directory>")
+	print("Usage: finfo -vh --version --help")
+
 def rw_access(fn):
 	if os.access(fn, os.R_OK):
 		print("read: \t ok")
@@ -59,24 +74,13 @@ def fcomp(fn1, fn2):
 	exist(fn2)
 	print("compare")
 
-def usage():
-	print("Usage: finfo  <file/directory>")
-	print("Usage: finfo -c --compare <file/directory> <file/directory>")
-	print("Usage: finfo -vh --version --help")
-
-			
 
 def main(argv):
-	try:
-		opts, args = getopt.getopt(sys.argv[1:], "hvc", ["help", "version", "compare"])
-	except getopt.GetoptError as err:		
-		print (str(err)) 
-		usage()
-		sys.exit(2)
 	if len(sys.argv)==0:
 		usage()
 		sys.exit()
 	else:
+		opts = parser(sys.argv[1:])
 		for o, a in opts:
 			if o in ("-h", "--help"):
 				usage()
