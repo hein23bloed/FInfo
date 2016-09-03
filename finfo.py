@@ -105,12 +105,21 @@ def fcomp(fn1, fn2):
 	exist(fn2)
 	print("compare")
 
+def isdir_lsdir(fn):
+	if os.path.isdir(fn):
+		return 1
+	else:
+		return 0
+
 def main(argv):
 	opts = parser(sys.argv[1:])
-	if opts=="no":	
-		print_finfo(sys.argv[1], exist(sys.argv[1]))
+	if opts=="no":
+		if isdir_lsdir(sys.argv[1]):
+			print("dir")
+		else:	
+			print_finfo(sys.argv[1], exist(sys.argv[1]))
 	elif opts=="c":
 		fcomp(sys.argv[2], sys.argv[3])
 		
 if __name__ == "__main__":
-	main(sys.argv[1:])
+	main(sys.argv)
