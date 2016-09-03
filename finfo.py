@@ -3,7 +3,7 @@
 import os, sys, time, errno, getopt, pwd, grp
 from stat import * 
 
-_version = "v0.01_04"
+_version = "v0.01"
 
 def parser(argv):
 	try:
