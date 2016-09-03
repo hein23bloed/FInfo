@@ -13,8 +13,39 @@ def parser(argv):
 		usage()
 		sys.exit(2)
 	else:
-		return opts
-
+		if len(argv)==0:
+			usage()
+			sys.exit()
+		for o, a in opts:
+			if o in ("-h", "--help"):
+				usage()
+				result="h"
+				return result
+				sys.exit()
+			elif o in ("-v", "--version"):
+				print (_version)
+				result="v"
+				return result
+				sys.exit()
+			elif o in ("-c", "--compare"):
+				if len(argv[2:])==0:
+					usage()
+					sys.exit()
+				elif len(argv[1:])>2:
+					usage()
+					sys.exit()
+				else:
+					result="c"
+					return result
+		else:
+			if len(argv)>1:
+				usage()
+				sys.exit()
+			else:
+				result="no"
+				return result
+			
+	
 def usage():
 	print("Usage: finfo  <file/directory>")
 	print("Usage: finfo -c --compare <file/directory> <file/directory>")
@@ -74,32 +105,12 @@ def fcomp(fn1, fn2):
 	exist(fn2)
 	print("compare")
 
-
 def main(argv):
-	if len(sys.argv)==0:
-		usage()
-		sys.exit()
-	else:
-		opts = parser(sys.argv[1:])
-		for o, a in opts:
-			if o in ("-h", "--help"):
-				usage()
-				sys.exit()
-			elif o in ("-v", "--version"):
-				print (_version)
-				sys.exit()
-			elif o in ("-c", "--compare"):
-				if len(sys.argv[3:])==0:
-					usage()
-					sys.exit()
-				else:
-					fcomp(sys.argv[2], sys.argv[3])
-					sys.exit()
-		else:
-			if len(sys.argv)>2:
-				usage()
-			else:
-				print_finfo(sys.argv[1], exist(sys.argv[1]))	
+	opts = parser(sys.argv[1:])
+	if opts=="no":	
+		print_finfo(sys.argv[1], exist(sys.argv[1]))
+	elif opts=="c":
+		fcomp(sys.argv[2], sys.argv[3])
 		
 if __name__ == "__main__":
 	main(sys.argv[1:])
