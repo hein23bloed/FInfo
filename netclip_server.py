@@ -11,10 +11,9 @@ def sstart():
 	print("Socket created!")
 
 	try:
-		sock.bind((HOST, PORT))
+		sock.bind((HOST, PORT))		
 	except socket.error as msg:
 		print("Bind failed. Error Code: " + str(msg))
-		sys.exit()
 	print("Socket bind complete!")
 
 	sock.listen(10)
@@ -41,14 +40,24 @@ def sstart():
 			continue
 		data = conn.recv(1024).decode("iso-8859-1")
 		if data == "Ok":
-			print(time.strftime("%d.%m.%y %H:%M:%S ") + "Connected: " + addr[0] + ":" + str(addr[1]))	
+			print(time.strftime("%d.%m.%y %H:%M:%S ") + "Connected: " + addr[0] + ":" + str(addr[1]))
+			read_comming(conn)
 		else:	
 			print("missing ok")
-			continue
-	sock.close()
+			return 0
+	return (1, sock, conn)
+
+def read_comming(conn):
+	while 1:
+		try:
+			data = conn.recv(1024).decode("iso-8859-1")
+			print(data)
+		except socket.error as msg:
+			print("read error")
+		
 	
 def main(argv):
-	sstart()
-
+	r, s = sstart()
+	s.close()
 if __name__ == "__main__":
 	main(sys.argv)
